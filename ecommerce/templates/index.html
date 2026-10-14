@@ -1,0 +1,208 @@
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Django | One of the Biggest Online Shopping Platform
+{% endblock %}
+
+{% block content %}
+
+<!-- ========================= SECTION MAIN ========================= -->
+<section class="section-intro padding-y-sm">
+    <div class="container">
+
+        <div class="intro-banner-wrap">
+            <img src="{% static 'images/banners/1.jpg' %}"
+                 class="img-fluid rounded"
+                 alt="Online shopping banner">
+        </div>
+
+    </div>
+</section>
+<!-- ========================= SECTION MAIN END ========================= -->
+
+
+<!-- ========================= POPULAR PRODUCTS ========================= -->
+<section class="section-name padding-y-sm">
+    <div class="container">
+
+        <header class="section-heading">
+            <a href="{% url 'store' %}"
+               class="btn btn-outline-primary float-right">
+                See all
+            </a>
+
+            <h3 class="section-title">Popular products</h3>
+        </header>
+
+        <div class="row">
+
+            <!-- Product 1 -->
+            <div class="col-md-3 col-sm-6">
+                <div class="card card-product-grid">
+
+                    <a href="{% url 'product_detail' %}" class="img-wrap">
+                        <img src="{% static 'images/items/1.jpg' %}"
+                             alt="Product 1">
+                    </a>
+
+                    <figcaption class="info-wrap">
+                        <a href="{% url 'product_detail' %}" class="title">
+                            Just another product name
+                        </a>
+
+                        <div class="price mt-1">$179.00</div>
+                    </figcaption>
+
+                </div>
+            </div>
+
+            <!-- Product 2 -->
+            <div class="col-md-3 col-sm-6">
+                <div class="card card-product-grid">
+
+                    <a href="{% url 'product_detail' %}" class="img-wrap">
+                        <img src="{% static 'images/items/2.jpg' %}"
+                             alt="Product 2">
+                    </a>
+
+                    <figcaption class="info-wrap">
+                        <a href="{% url 'product_detail' %}" class="title">
+                            Some item name here
+                        </a>
+
+                        <div class="price mt-1">$280.00</div>
+                    </figcaption>
+
+                </div>
+            </div>
+
+            <!-- Product 3 -->
+            <div class="col-md-3 col-sm-6">
+                <div class="card card-product-grid">
+
+                    <a href="{% url 'product_detail' %}" class="img-wrap">
+                        <img src="{% static 'images/items/3.jpg' %}"
+                             alt="Product 3">
+                    </a>
+
+                    <figcaption class="info-wrap">
+                        <a href="{% url 'product_detail' %}" class="title">
+                            Great product name here
+                        </a>
+
+                        <div class="price mt-1">$56.00</div>
+                    </figcaption>
+
+                </div>
+            </div>
+
+            <!-- Product 4 -->
+            <div class="col-md-3 col-sm-6">
+                <div class="card card-product-grid">
+
+                    <a href="{% url 'product_detail' %}" class="img-wrap">
+                        <img src="{% static 'images/items/4.jpg' %}"
+                             alt="Product 4">
+                    </a>
+
+                    <figcaption class="info-wrap">
+                        <a href="{% url 'product_detail' %}" class="title">
+                            Just another product name
+                        </a>
+
+                        <div class="price mt-1">$179.00</div>
+                    </figcaption>
+
+                </div>
+            </div>
+
+            <!-- Product 5 -->
+            <div class="col-md-3 col-sm-6">
+                <div class="card card-product-grid">
+
+                    <a href="{% url 'product_detail' %}" class="img-wrap">
+                        <img src="{% static 'images/items/5.jpg' %}"
+                             alt="Product 5">
+                    </a>
+
+                    <figcaption class="info-wrap">
+                        <a href="{% url 'product_detail' %}" class="title">
+                            Just another product name
+                        </a>
+
+                        <div class="price mt-1">$179.00</div>
+                    </figcaption>
+
+                </div>
+            </div>
+
+            <!-- Product 6 -->
+            <div class="col-md-3 col-sm-6">
+                <div class="card card-product-grid">
+
+                    <a href="{% url 'product_detail' %}" class="img-wrap">
+                        <img src="{% static 'images/items/6.jpg' %}"
+                             alt="Product 6">
+                    </a>
+
+                    <figcaption class="info-wrap">
+                        <a href="{% url 'product_detail' %}" class="title">
+                            Some item name here
+                        </a>
+
+                        <div class="price mt-1">$280.00</div>
+                    </figcaption>
+
+                </div>
+            </div>
+
+            <!-- Product 7 -->
+            <div class="col-md-3 col-sm-6">
+                <div class="card card-product-grid">
+
+                    <a href="{% url 'product_detail' %}" class="img-wrap">
+                        <img src="{% static 'images/items/7.jpg' %}"
+                             alt="Product 7">
+                    </a>
+
+                    <figcaption class="info-wrap">
+                        <a href="{% url 'product_detail' %}" class="title">
+                            Great product name here
+                        </a>
+
+                        <div class="price mt-1">$56.00</div>
+                    </figcaption>
+
+                </div>
+            </div>
+
+            <!-- Product 8 -->
+            <div class="col-md-3 col-sm-6">
+                <div class="card card-product-grid">
+
+                    <a href="{% url 'product_detail' %}" class="img-wrap">
+                        <img src="{% static 'images/items/9.jpg' %}"
+                             alt="Product 8">
+                    </a>
+
+                    <figcaption class="info-wrap">
+                        <a href="{% url 'product_detail' %}" class="title">
+                            Just another product name
+                        </a>
+
+                        <div class="price mt-1">$179.00</div>
+                    </figcaption>
+
+                </div>
+            </div>
+
+        </div>
+        <!-- row end -->
+
+    </div>
+</section>
+<!-- ========================= POPULAR PRODUCTS END ========================= -->
+
+{% endblock %}
