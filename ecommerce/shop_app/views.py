@@ -1,13 +1,38 @@
-
 from django.shortcuts import render
+from .models import Category, Product
 
 
 def index(request):
-    return render(request, "index.html")
+    products = Product.objects.filter(is_available=True)
+    categories = Category.objects.all()
+
+    product_count = products.count()
+
+    context = {
+        "products": products,
+        "categories": categories,
+        "product_count": product_count,
+    }
+
+    return render(request, "index.html", context)
 
 
 def store(request):
-    return render(request, "store.html")
+    products = list(Product.objects.raw(
+        "SELECT * FROM store_product WHERE is_available = %s",
+        [True]
+    ))
+
+    categories = Category.objects.all()
+    product_count = len(products)
+
+    context = {
+        "products": products,
+        "categories": categories,
+        "product_count": product_count,
+    }
+
+    return render(request, "store.html", context)
 
 
 def cart(request):
@@ -27,7 +52,10 @@ def place_order(request):
 
 
 def product_detail(request):
-    return render(request, "product-detail.html")
+    products = Product.objects.all()
+    return render(request, "product-detail.html", {
+        "products": products
+    })
 
 
 def register(request):
@@ -35,7 +63,23 @@ def register(request):
 
 
 def search_result(request):
-    return render(request, "search-result.html")
+    keyword = request.GET.get("keyword", "").strip()
+
+    if keyword:
+        products = Product.objects.filter(
+            product_name__icontains=keyword,
+            is_available=True
+        )
+    else:
+        products = Product.objects.none()
+
+    context = {
+        "products": products,
+        "product_count": products.count(),
+        "keyword": keyword,
+    }
+
+    return render(request, "search-result.html", context)
 
 
 def signin(request):
