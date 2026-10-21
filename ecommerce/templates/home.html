@@ -1,148 +1,102 @@
-{% extends "base.html" %}
 
+{% extends "base.html" %}
 {% load static %}
 
-
 {% block title %}
-
 Home | Online Shop
-
 {% endblock %}
-
-
 
 {% block content %}
 
-
 <!-- ================= BANNER ================= -->
-
 <section class="section-intro padding-y-sm">
-
     <div class="container">
-
         <div class="intro-banner-wrap">
-
             <img
                 src="{% static 'images/banners/1.jpg' %}"
                 class="img-fluid rounded"
-                alt="Banner">
-
+                alt="Banner"
+            >
         </div>
-
     </div>
-
 </section>
 
-
-
 <!-- ================= PRODUCTS ================= -->
-
 <section class="section-name padding-y-sm">
-
     <div class="container">
 
-
         <header class="section-heading">
-
-            <a href="{% url 'store' %}"
-               class="btn btn-outline-primary float-right">
-
+            <a
+                href="{% url 'store' %}"
+                class="btn btn-outline-primary float-right"
+            >
                 See all
-
             </a>
 
             <h3 class="section-title">
-
                 Popular products
-
             </h3>
-
         </header>
-
-
 
         <div class="row">
 
-
             {% for product in store_products %}
 
+            <div class="col-md-3 mb-4">
+                <div class="card card-product-grid h-100">
 
-            <div class="col-md-3">
-
-
-                <div class="card card-product-grid">
-
-
+                    <!-- PRODUCT IMAGE -->
                     {% if product.images %}
-
-                    <a href="{% url 'store' %}"
-                       class="img-wrap">
-
+                    <a
+                        href="{{ product.get_url }}"
+                        class="img-wrap"
+                    >
                         <img
                             src="{{ product.images.url }}"
-                            alt="{{ product.product_name }}">
-
+                            alt="{{ product.product_name }}"
+                            style="object-fit:contain;"
+                        >
                     </a>
-
                     {% endif %}
 
-
-
+                    <!-- PRODUCT INFORMATION -->
                     <figcaption class="info-wrap">
 
-
-                        <a href="{% url 'store' %}"
-                           class="title">
-
+                        <!-- PRODUCT NAME -->
+                        <a
+                            href="{{ product.get_url }}"
+                            class="title"
+                        >
                             {{ product.product_name }}
-
                         </a>
 
-
+                        <!-- PRICE -->
                         <div class="price mt-1">
-
                             {{ product.price }} ₮
-
                         </div>
 
-
+                        <!-- CATEGORY -->
                         <small class="text-muted">
-
                             {{ product.category.category_name }}
-
                         </small>
-
 
                     </figcaption>
 
-
                 </div>
-
             </div>
-
 
             {% empty %}
 
-
             <div class="col-md-12">
-
                 <div class="alert alert-warning text-center">
-
                     Бүтээгдэхүүн олдсонгүй.
-
                 </div>
-
             </div>
-
 
             {% endfor %}
 
-
         </div>
-
     </div>
-
 </section>
-
 
 {% endblock %}

@@ -1,841 +1,328 @@
-{% load static %}
 
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1">
+    <title>{% block title %}Online Shop{% endblock %}</title>
 
-    <title>
-        {% block title %}
-            Online Shop
-        {% endblock %}
-    </title>
-
-
-    <!-- ================= BOOTSTRAP ================= -->
-
-    <link
-        rel="stylesheet"
-        href="{% static 'css/bootstrap.css' %}">
-
-
-    <!-- ================= FONT AWESOME ================= -->
-
-    <link
-        rel="stylesheet"
-        href="{% static 'fonts/fontawesome/css/all.min.css' %}">
-
-
-    <!-- ================= MAIN CSS ================= -->
-
-    <link
-        rel="stylesheet"
-        href="{% static 'css/ui.css' %}">
-
-
-    <!-- ================= RESPONSIVE CSS ================= -->
-
-    <link
-        rel="stylesheet"
-        href="{% static 'css/responsive.css' %}">
-
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'fonts/fontawesome/css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/ui.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
 </head>
-
 
 <body>
 
-
-<!-- ================================================== -->
-<!--                    HEADER                          -->
-<!-- ================================================== -->
-
+<!-- HEADER -->
 <header class="section-header">
 
-
-    <!-- ================= TOP BAR ================= -->
-
+    <!-- TOP BAR -->
     <section class="header-top bg-light border-bottom">
-
         <div class="container">
-
             <div class="row align-items-center">
-
                 <div class="col-md-6">
-
                     <span class="text-muted">
-
                         Welcome to our Online Shop
-
                     </span>
-
                 </div>
-
 
                 <div class="col-md-6 text-md-right">
-
                     <span class="text-muted">
-
                         English &nbsp; | &nbsp; USD
-
                     </span>
-
                 </div>
-
             </div>
-
         </div>
-
     </section>
 
-
-
-    <!-- ================================================== -->
-    <!--                  MAIN HEADER                       -->
-    <!-- ================================================== -->
-
+    <!-- MAIN HEADER -->
     <section class="header-main border-bottom">
-
         <div class="container">
-
             <div class="row align-items-center">
 
-
-                <!-- ================= LOGO ================= -->
-
+                <!-- LOGO -->
                 <div class="col-lg-2 col-md-3 col-6">
-
-                    <a
-                        href="{% url 'home' %}"
-                        class="brand-wrap">
-
+                    <a href="{% url 'home' %}" class="brand-wrap">
                         <img
                             src="{% static 'images/logo.png' %}"
                             class="logo"
-                            alt="Online Shop">
-
+                            alt="Online Shop"
+                        >
                     </a>
-
                 </div>
 
-
-
-                <!-- ================= CATEGORY ================= -->
-
+                <!-- CATEGORIES DROPDOWN -->
                 <div class="col-lg-2 col-md-3 col-6">
-
                     <div class="category-wrap dropdown">
 
                         <button
                             class="btn btn-primary dropdown-toggle"
                             type="button"
-                            data-toggle="dropdown">
-
+                            data-toggle="dropdown"
+                            aria-expanded="false"
+                        >
                             <i class="fa fa-bars"></i>
-
-                            &nbsp;
-
-                            Categories
-
+                            &nbsp; Categories
                         </button>
-
 
                         <div class="dropdown-menu">
 
+                            <a
+                                class="dropdown-item"
+                                href="{% url 'store' %}"
+                            >
+                                All Products
+                            </a>
 
                             {% for category in categories %}
-
-
-                                <a
-                                    class="dropdown-item"
-                                    href="#">
-
-                                    {{ category.category_name }}
-
-                                </a>
-
-
+                            <a
+                                class="dropdown-item"
+                                href="{% url 'products_by_category' category.slug %}"
+                            >
+                                {{ category.category_name }}
+                            </a>
                             {% empty %}
-
-
-                                <a
-                                    class="dropdown-item"
-                                    href="#">
-
-                                    No categories
-
-                                </a>
-
-
+                            <span class="dropdown-item text-muted">
+                                No categories
+                            </span>
                             {% endfor %}
 
-
                         </div>
-
                     </div>
-
                 </div>
 
-
-
-                <!-- ================================================== -->
-                <!--                    SEARCH                          -->
-                <!-- ================================================== -->
-
+                <!-- SEARCH -->
                 <div class="col-lg-5 col-md-6 col-sm-12">
-
-
                     <form
                         action="{% url 'store' %}"
                         method="GET"
-                        class="search">
-
-
+                        class="search"
+                    >
                         <div class="input-group w-100">
-
-
                             <input
                                 type="text"
                                 name="keyword"
                                 class="form-control"
                                 placeholder="Search"
-                                value="{{ keyword }}">
-
+                                value="{{ keyword|default:'' }}"
+                            >
 
                             <div class="input-group-append">
-
-
                                 <button
                                     class="btn btn-primary"
-                                    type="submit">
-
-
+                                    type="submit"
+                                >
                                     <i class="fa fa-search"></i>
-
-
                                 </button>
-
-
                             </div>
-
-
                         </div>
-
-
                     </form>
-
-
                 </div>
 
-
-
-                <!-- ================================================== -->
-                <!--                     ACCOUNT                        -->
-                <!-- ================================================== -->
-
+                <!-- ACCOUNT -->
                 <div class="col-lg-3 col-md-6">
-
-
-                    <div
-                        class="d-flex justify-content-end align-items-center">
-
-
-                        <!-- USER -->
+                    <div class="d-flex justify-content-end align-items-center">
 
                         <div class="widget-header">
-
-
                             <a
                                 href="#"
-                                class="icon icon-sm rounded-circle border">
-
-
+                                class="icon icon-sm rounded-circle border"
+                            >
                                 <i class="fa fa-user"></i>
-
-
                             </a>
-
-
                         </div>
-
-
 
                         <div class="widget-header mr-3">
-
-
                             <small class="text">
-
-
-                                <a href="#">
-
-                                    Sign in
-
-                                </a>
-
-
+                                <a href="#">Sign in</a>
                                 <br>
-
-
-                                <a href="#">
-
-                                    Register
-
-                                </a>
-
-
+                                <a href="#">Register</a>
                             </small>
-
-
                         </div>
-
-
 
                         <!-- CART -->
-
                         <div class="widget-header">
-
-
                             <a
                                 href="#"
-                                class="icon icon-sm rounded-circle border">
-
-
+                                class="icon icon-sm rounded-circle border"
+                            >
                                 <i class="fa fa-shopping-cart"></i>
-
-
                             </a>
 
-
-                            <span
-                                class="badge badge-pill badge-danger notify">
-
+                            <span class="badge badge-pill badge-danger notify">
                                 0
-
                             </span>
-
-
                         </div>
 
-
                     </div>
-
-
                 </div>
 
-
             </div>
-
         </div>
-
     </section>
 
-
-
-    <!-- ================================================== -->
-    <!--                    NAVIGATION                      -->
-    <!-- ================================================== -->
-
-    <nav
-        class="navbar navbar-main navbar-expand-lg border-bottom">
-
-
+    <!-- NAVIGATION -->
+    <nav class="navbar navbar-main navbar-expand-lg border-bottom">
         <div class="container">
-
-
-            <!-- MOBILE MENU BUTTON -->
 
             <button
                 class="navbar-toggler"
                 type="button"
                 data-toggle="collapse"
-                data-target="#mainNavbar">
-
-
-                <span class="navbar-toggler-icon">
-
-                    ☰
-
-                </span>
-
-
+                data-target="#mainNavbar"
+                aria-controls="mainNavbar"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+            >
+                <span class="navbar-toggler-icon">☰</span>
             </button>
 
+            <div class="collapse navbar-collapse" id="mainNavbar">
 
-
-            <!-- NAVIGATION -->
-
-            <div
-                class="collapse navbar-collapse"
-                id="mainNavbar">
-
-
-                <ul
-                    class="navbar-nav mr-auto">
-
+                <ul class="navbar-nav mr-auto">
 
                     <!-- HOME -->
-
                     <li class="nav-item">
-
-
                         <a
                             class="nav-link"
-                            href="{% url 'home' %}">
-
-
+                            href="{% url 'home' %}"
+                        >
                             <i class="fa fa-home"></i>
-
                             Home
-
-
                         </a>
-
-
                     </li>
-
-
 
                     <!-- STORE -->
-
                     <li class="nav-item">
-
-
                         <a
                             class="nav-link"
-                            href="{% url 'store' %}">
-
-
+                            href="{% url 'store' %}"
+                        >
                             <i class="fa fa-store"></i>
-
                             Store
-
-
                         </a>
-
-
                     </li>
 
 
-
-                    <!-- PRODUCTS -->
-
-                    <li class="nav-item dropdown">
-
-
-                        <a
-                            class="nav-link dropdown-toggle"
-                            href="#"
-                            data-toggle="dropdown">
-
-
-                            Products
-
-
-                        </a>
-
-
-                        <div class="dropdown-menu">
-
-
-                            {% for category in categories %}
-
-
-                                <a
-                                    class="dropdown-item"
-                                    href="#">
-
-
-                                    {{ category.category_name }}
-
-
-                                </a>
-
-
-                            {% endfor %}
-
-
-                        </div>
-
-
-                    </li>
-
-
-                </ul>
-
-
-
-                <!-- RIGHT SIDE NAV -->
-
-                <ul
-                    class="navbar-nav ml-auto">
-
-
+                <!-- RIGHT NAV -->
+                <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-
-
-                        <a
-                            class="nav-link"
-                            href="#">
-
-
+                        <a class="nav-link" href="{% url 'cart' %}">
                             <i class="fa fa-shopping-cart"></i>
-
                             Cart
-
-
                         </a>
-
-
                     </li>
-
-
                 </ul>
-
 
             </div>
-
-
         </div>
-
-
     </nav>
-
 
 </header>
 
-
-
-<!-- ================================================== -->
-<!--                    MAIN CONTENT                    -->
-<!-- ================================================== -->
-
-
+<!-- MAIN CONTENT -->
 <main>
-
-
     {% block content %}
-
-
     {% endblock %}
-
-
 </main>
 
-
-
-<!-- ================================================== -->
-<!--                     FOOTER                         -->
-<!-- ================================================== -->
-
+<!-- FOOTER -->
 <footer class="section-footer border-top">
-
-
     <div class="container">
 
-
-        <!-- ================= FOOTER TOP ================= -->
-
         <section class="footer-top padding-y">
-
-
             <div class="row">
 
-
                 <!-- ABOUT -->
-
                 <div class="col-md-4">
-
-
-                    <h5 class="title">
-
-                        Online Shop
-
-                    </h5>
-
-
+                    <h5 class="title">Online Shop</h5>
                     <p class="text-muted">
-
-
                         Welcome to our online shop.
-
-
                         We provide quality products
-
-
                         at affordable prices.
-
-
                     </p>
-
-
                 </div>
-
-
 
                 <!-- INFORMATION -->
-
                 <div class="col-md-2">
-
-
-                    <h5 class="title">
-
-                        Information
-
-                    </h5>
-
+                    <h5 class="title">Information</h5>
 
                     <ul class="list-unstyled">
-
-
                         <li>
-
-                            <a href="{% url 'home' %}">
-
-                                Home
-
-                            </a>
-
+                            <a href="{% url 'home' %}">Home</a>
                         </li>
-
-
                         <li>
-
-                            <a href="{% url 'store' %}">
-
-                                Store
-
-                            </a>
-
+                            <a href="{% url 'store' %}">Store</a>
                         </li>
-
-
                         <li>
-
-                            <a href="#">
-
-                                About us
-
-                            </a>
-
+                            <a href="#">About us</a>
                         </li>
-
-
                         <li>
-
-                            <a href="#">
-
-                                Contact
-
-                            </a>
-
+                            <a href="#">Contact</a>
                         </li>
-
-
                     </ul>
-
-
                 </div>
 
-
-
-                <!-- ACCOUNT -->
-
+                <!-- MY ACCOUNT -->
                 <div class="col-md-3">
-
-
-                    <h5 class="title">
-
-                        My Account
-
-                    </h5>
-
+                    <h5 class="title">My Account</h5>
 
                     <ul class="list-unstyled">
-
-
-                        <li>
-
-                            <a href="#">
-
-                                Sign in
-
-                            </a>
-
-                        </li>
-
-
-                        <li>
-
-                            <a href="#">
-
-                                Register
-
-                            </a>
-
-                        </li>
-
-
-                        <li>
-
-                            <a href="#">
-
-                                My orders
-
-                            </a>
-
-                        </li>
-
-
-                        <li>
-
-                            <a href="#">
-
-                                Shopping cart
-
-                            </a>
-
-                        </li>
-
-
+                        <li><a href="#">Sign in</a></li>
+                        <li><a href="#">Register</a></li>
+                        <li><a href="#">My orders</a></li>
+                        <li><a href="#">Shopping cart</a></li>
                     </ul>
-
-
                 </div>
-
-
 
                 <!-- CONTACT -->
-
                 <div class="col-md-3">
-
-
-                    <h5 class="title">
-
-                        Contact
-
-                    </h5>
-
+                    <h5 class="title">Contact</h5>
 
                     <ul class="list-unstyled">
-
-
                         <li>
-
                             <i class="fa fa-phone"></i>
-
-                            &nbsp;
-
-                            +976 9999-9999
-
+                            &nbsp; +976 9999-9999
                         </li>
-
-
                         <li>
-
                             <i class="fa fa-envelope"></i>
-
-                            &nbsp;
-
-                            info@onlineshop.com
-
+                            &nbsp; info@onlineshop.com
                         </li>
-
-
                         <li>
-
                             <i class="fa fa-map-marker-alt"></i>
-
-                            &nbsp;
-
-                            Ulaanbaatar, Mongolia
-
+                            &nbsp; Ulaanbaatar, Mongolia
                         </li>
-
-
                     </ul>
-
-
                 </div>
 
-
             </div>
-
-
         </section>
 
-
-
-        <!-- ================= FOOTER BOTTOM ================= -->
-
-        <section
-            class="footer-bottom row border-top pt-3">
-
-
+        <!-- FOOTER BOTTOM -->
+        <section class="footer-bottom row border-top pt-3">
             <div class="col-md-6">
-
-
                 <p class="text-muted">
-
-
                     © 2026 Online Shop
-
-
                 </p>
-
-
             </div>
-
-
 
             <div class="col-md-6 text-md-right">
-
-
                 <p class="text-muted">
-
-
                     Django Ecommerce Project
-
-
                 </p>
-
-
             </div>
-
-
         </section>
 
-
     </div>
-
-
 </footer>
 
-
-
-<!-- ================================================== -->
-<!--                    JAVASCRIPT                      -->
-<!-- ================================================== -->
-
-
-<script
-    src="{% static 'js/jquery-2.0.0.min.js' %}">
-</script>
-
-
-<script
-    src="{% static 'js/bootstrap.bundle.min.js' %}">
-</script>
-
-
-<script
-    src="{% static 'js/script.js' %}">
-</script>
-
+<!-- JAVASCRIPT -->
+<script src="{% static 'js/jquery-2.0.0.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'js/script.js' %}"></script>
 
 </body>
-
 </html>

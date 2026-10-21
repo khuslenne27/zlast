@@ -1,272 +1,197 @@
-{% extends "base.html" %}
 
+{% extends "base.html" %}
 {% load static %}
 
-
-{% block title %}
-
-Store | Online Shop
-
-{% endblock %}
-
-
+{% block title %}Our Store{% endblock %}
 
 {% block content %}
 
+<div class="container py-4">
+    <div class="row">
 
-<!-- ================= PAGE TITLE ================= -->
+        <!-- CATEGORIES -->
+        <aside class="col-md-3">
+            <h5 class="mb-3">Categories</h5>
 
-<section class="section-pagetop bg">
+            <ul class="list-group">
 
-    <div class="container">
+                <li class="list-group-item">
+                    <a href="{% url 'store' %}">
+                        All Products
+                    </a>
+                </li>
 
-        <h2 class="title-page">
+                {% for category in categories %}
+                <li class="list-group-item">
+                    <a href="{% url 'products_by_category' category.slug %}">
+                        {{ category.category_name }}
+                    </a>
+                </li>
+                {% empty %}
+                <li class="list-group-item">
+                    Category байхгүй байна.
+                </li>
+                {% endfor %}
 
-            Our Store
+            </ul>
+        </aside>
 
-        </h2>
+        <!-- PRODUCTS -->
+        <main class="col-md-9">
 
-    </div>
+            <h2 class="mb-3">
+                {% if selected_category %}
+                    {{ selected_category.category_name }}
+                {% else %}
+                    Our Store
+                {% endif %}
+            </h2>
 
-</section>
+            <p class="text-muted mb-4">
+                {{ product_count }} products found
+            </p>
 
+            <div class="row">
 
+                {% for product in products %}
 
-<!-- ================= STORE ================= -->
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
 
-<section class="section-content padding-y">
+                        <!-- PRODUCT IMAGE -->
+                        {% if product.images %}
+                        <a href="{{ product.get_url }}">
+                            <img
+                                src="{{ product.images.url }}"
+                                class="card-img-top"
+                                style="height:220px; object-fit:contain;"
+                                alt="{{ product.product_name }}"
+                            >
+                        </a>
+                        {% endif %}
 
-    <div class="container">
+                        <div class="card-body">
 
-        <div class="row">
-
-
-            <!-- ================= CATEGORY ================= -->
-
-            <aside class="col-md-3">
-
-                <div class="card">
-
-
-                    <article class="filter-group">
-
-
-                        <header class="card-header">
-
-                            <h6 class="title">
-
-                                Categories
-
-                            </h6>
-
-                        </header>
-
-
-
-                        <div class="filter-content">
-
-                            <div class="card-body">
-
-
-                                {% for category in categories %}
-
-
-                                <a href="#"
-                                   class="d-block mb-2">
-
-                                    {{ category.category_name }}
-
+                            <!-- PRODUCT NAME -->
+                            <h5 class="card-title">
+                                <a
+                                    href="{{ product.get_url }}"
+                                    class="text-dark"
+                                >
+                                    {{ product.product_name }}
                                 </a>
+                            </h5>
 
+                            <p class="card-text">
+                                {{ product.description }}
+                            </p>
 
-                                {% empty %}
+                            <h5 class="text-primary">
+                                {{ product.price }} ₮
+                            </h5>
 
+                            <p>
+                                Stock: {{ product.stock }}
+                            </p>
 
-                                <p class="text-muted">
+                            <p>
+                                Category:
+                                {{ product.category.category_name }}
+                            </p>
 
-                                    Category байхгүй.
-
-                                </p>
-
-
-                                {% endfor %}
-
-
-                            </div>
-
-                        </div>
-
-
-                    </article>
-
-                </div>
-
-            </aside>
-
-
-
-            <!-- ================= PRODUCTS ================= -->
-
-            <main class="col-md-9">
-
-
-                <header class="border-bottom mb-4 pb-3">
-
-                    <div class="form-inline">
-
-                        <span class="mr-md-auto">
-
-                            Нийт
-
-                            <strong>
-
-                                {{ product_count }}
-
-                            </strong>
-
-                            бүтээгдэхүүн
-
-                        </span>
-
-                    </div>
-
-                </header>
-
-
-
-                <div class="row">
-
-
-                    {% for product in store_products %}
-
-
-                    <div class="col-md-4">
-
-
-                        <div class="card card-product-grid">
-
-
-                            {% if product.images %}
-
-                            <a href="#"
-                               class="img-wrap">
-
-                                <img
-                                    src="{{ product.images.url }}"
-                                    alt="{{ product.product_name }}">
-
-                            </a>
-
+                            {% if product.is_available %}
+                            <span class="badge badge-success">
+                                Available
+                            </span>
+                            {% else %}
+                            <span class="badge badge-danger">
+                                Not available
+                            </span>
                             {% endif %}
 
-
-
-                            <figcaption class="info-wrap">
-
-
-                                <a href="#"
-                                   class="title">
-
-                                    {{ product.product_name }}
-
-                                </a>
-
-
-
-                                <div class="price mt-1">
-
-                                    {{ product.price }} ₮
-
-                                </div>
-
-
-
-                                <small class="text-muted">
-
-                                    Category:
-
-                                    {{ product.category.category_name }}
-
-                                </small>
-
-
-                                <br>
-
-
-
-                                {% if product.is_available %}
-
-
-                                <span
-                                    class="badge badge-success mt-2">
-
-                                    Available
-
-                                </span>
-
-
-                                {% else %}
-
-
-                                <span
-                                    class="badge badge-danger mt-2">
-
-                                    Not Available
-
-                                </span>
-
-
-                                {% endif %}
-
-
-                                <br>
-
-
-                                <small class="text-muted">
-
-                                    Stock:
-
-                                    {{ product.stock }}
-
-                                </small>
-
-
-                            </figcaption>
-
-
                         </div>
-
                     </div>
+                </div>
 
+                {% empty %}
 
-                    {% empty %}
-
-
-                    <div class="col-md-12">
-
-                        <div class="alert alert-warning">
-
-                            Бүтээгдэхүүн олдсонгүй.
-
-                        </div>
-
+                <div class="col-12">
+                    <div class="alert alert-warning">
+                        Бүтээгдэхүүн олдсонгүй.
                     </div>
+                </div>
 
+                {% endfor %}
+
+            </div>
+
+            {% if products.paginator.num_pages > 1 %}
+
+            <nav aria-label="Product pagination">
+                <ul class="pagination justify-content-center mt-4">
+
+                    {% if products.has_previous %}
+                    <li class="page-item">
+                        <a
+                            class="page-link"
+                            href="?page={{ products.previous_page_number }}{% if keyword %}&amp;keyword={{ keyword|urlencode }}{% endif %}"
+                        >
+                            Previous
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">
+                            Previous
+                        </span>
+                    </li>
+                    {% endif %}
+
+                    {% for number in products.paginator.page_range %}
+
+                    {% if products.number == number %}
+                    <li class="page-item active">
+                        <span class="page-link">
+                            {{ number }}
+                        </span>
+                    </li>
+                    {% else %}
+                    <li class="page-item">
+                        <a
+                            class="page-link"
+                            href="?page={{ number }}{% if keyword %}&amp;keyword={{ keyword|urlencode }}{% endif %}"
+                        >
+                            {{ number }}
+                        </a>
+                    </li>
+                    {% endif %}
 
                     {% endfor %}
 
+                    {% if products.has_next %}
+                    <li class="page-item">
+                        <a
+                            class="page-link"
+                            href="?page={{ products.next_page_number }}{% if keyword %}&amp;keyword={{ keyword|urlencode }}{% endif %}"
+                        >
+                            Next
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">
+                            Next
+                        </span>
+                    </li>
+                    {% endif %}
 
-                </div>
+                </ul>
+            </nav>
 
+            {% endif %}
 
-            </main>
-
-
-        </div>
-
+        </main>
     </div>
-
-</section>
-
+</div>
 
 {% endblock %}
