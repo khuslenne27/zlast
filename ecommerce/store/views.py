@@ -1,7 +1,9 @@
 
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
+
 from .models import Product, Category
+from carts.models import CartItem
 
 
 def home(request):
@@ -39,13 +41,10 @@ def store(request, category_slug=None):
         )
 
     products = products.order_by('-id')
-
     product_count = products.count()
 
     paginator = Paginator(products, 6)
-
     page_number = request.GET.get('page')
-
     paged_products = paginator.get_page(page_number)
 
     context = {
@@ -60,6 +59,7 @@ def store(request, category_slug=None):
     return render(request, 'store/store.html', context)
 
 
+
 def product_detail(request, category_slug, product_slug):
     product = get_object_or_404(
         Product,
@@ -69,9 +69,22 @@ def product_detail(request, category_slug, product_slug):
 
     categories = Category.objects.all()
 
+    session_key = request.session.session_key
+
+    if not session_key:
+        request.session.create()
+        session_key = request.session.session_key
+
+    in_cart = CartItem.objects.filter(
+        cart__cart_id=session_key,
+        product_id=product.id,
+        quantity__gt=0
+    ).exists()
+
     context = {
         'product': product,
         'categories': categories,
+        'in_cart': in_cart,
     }
 
     return render(

@@ -126,6 +126,7 @@
                 <div class="col-lg-3 col-md-6">
                     <div class="d-flex justify-content-end align-items-center">
 
+                        <!-- USER ICON -->
                         <div class="widget-header">
                             <a
                                 href="#"
@@ -135,6 +136,7 @@
                             </a>
                         </div>
 
+                        <!-- SIGN IN / REGISTER -->
                         <div class="widget-header mr-3">
                             <small class="text">
                                 <a href="#">Sign in</a>
@@ -143,18 +145,20 @@
                             </small>
                         </div>
 
-                        <!-- CART -->
+                        <!-- CART ICON AND COUNTER -->
                         <div class="widget-header">
+
                             <a
-                                href="#"
+                                href="{% url 'cart' %}"
                                 class="icon icon-sm rounded-circle border"
                             >
                                 <i class="fa fa-shopping-cart"></i>
                             </a>
 
                             <span class="badge badge-pill badge-danger notify">
-                                0
+                                {{ cart_count|default:0 }}
                             </span>
+
                         </div>
 
                     </div>
@@ -206,11 +210,15 @@
                         </a>
                     </li>
 
+                </ul>
 
                 <!-- RIGHT NAV -->
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'cart' %}">
+                        <a
+                            class="nav-link"
+                            href="{% url 'cart' %}"
+                        >
                             <i class="fa fa-shopping-cart"></i>
                             Cart
                         </a>
@@ -274,7 +282,11 @@
                         <li><a href="#">Sign in</a></li>
                         <li><a href="#">Register</a></li>
                         <li><a href="#">My orders</a></li>
-                        <li><a href="#">Shopping cart</a></li>
+                        <li>
+                            <a href="{% url 'cart' %}">
+                                Shopping cart
+                            </a>
+                        </li>
                     </ul>
                 </div>
 

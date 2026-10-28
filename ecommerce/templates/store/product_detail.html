@@ -2,114 +2,139 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}
-{{ product.product_name }}
-{% endblock %}
-
 {% block content %}
 
 <section class="section-content padding-y bg">
     <div class="container">
 
+        <!-- BREADCRUMB -->
         <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
+            <ol class="breadcrumb bg-transparent pl-0">
                 <li class="breadcrumb-item">
                     <a href="{% url 'home' %}">Home</a>
                 </li>
-
                 <li class="breadcrumb-item">
                     <a href="{% url 'store' %}">Store</a>
                 </li>
-
                 <li class="breadcrumb-item">
                     <a href="{% url 'products_by_category' product.category.slug %}">
                         {{ product.category.category_name }}
                     </a>
                 </li>
-
                 <li class="breadcrumb-item active">
                     {{ product.product_name }}
                 </li>
             </ol>
         </nav>
 
+        <!-- PRODUCT DETAIL CARD -->
         <div class="card">
             <div class="row no-gutters">
 
+                <!-- PRODUCT IMAGE -->
                 <aside class="col-md-6">
-                    <div class="img-big-wrap text-center p-4">
+                    <article class="gallery-wrap">
+                        <div class="img-big-wrap">
 
-                        {% if product.images %}
-                        <img
-                            src="{{ product.images.url }}"
-                            alt="{{ product.product_name }}"
-                            class="img-fluid"
-                            style="max-height:420px; object-fit:contain;"
-                        >
-                        {% else %}
-                        <div class="alert alert-secondary">
-                            Зураг байхгүй байна.
+                            {% if product.images %}
+                                <img
+                                    src="{{ product.images.url }}"
+                                    alt="{{ product.product_name }}"
+                                    style="width:100%; height:400px; object-fit:contain;"
+                                >
+                            {% else %}
+                                <div class="text-center p-5">
+                                    <p class="text-muted">
+                                        No Image Available
+                                    </p>
+                                </div>
+                            {% endif %}
+
                         </div>
-                        {% endif %}
-
-                    </div>
+                    </article>
                 </aside>
 
+                <!-- PRODUCT INFORMATION -->
                 <main class="col-md-6 border-left">
-                    <article class="content-body p-4">
+                    <article class="content-body">
 
+                        <!-- NAME -->
                         <h2 class="title">
                             {{ product.product_name }}
                         </h2>
 
+                        <!-- CATEGORY -->
                         <p class="text-muted">
                             Category:
                             {{ product.category.category_name }}
                         </p>
 
+                        <!-- PRICE -->
                         <div class="mb-3">
-                            <span class="h3 text-primary">
+                            <var class="price h4 text-primary">
                                 {{ product.price }} ₮
-                            </span>
+                            </var>
                         </div>
 
                         <hr>
 
+                        <!-- DESCRIPTION -->
                         <h5>Description</h5>
-
                         <p>
                             {{ product.description }}
                         </p>
 
                         <hr>
 
+                        <!-- STOCK -->
                         <p>
                             <strong>Stock:</strong>
                             {{ product.stock }}
                         </p>
 
-                        
-                        {% if product.stock > 0 and product.is_available %}
-
-                        <form action="{% url 'add_cart' product.id %}" method="POST">
-                            {% csrf_token %}
-
-                            <button type="submit" class="btn btn-primary btn-lg">
-                                <i class="fa fa-shopping-cart"></i>
-                                Add to Cart
-                            </button>
-                        </form>
-
-                        {% else %}
-
-                        <div class="alert alert-danger">
-                            Out of Stock — Бараа дууссан байна.
+                        <!-- DEBUG -->
+                        <div class="alert alert-info">
+                            <strong>Сагсанд хэдийн нэмэгдсэн байна</strong>
                         </div>
+
+                        <!-- ADD TO CART BUTTON -->
+
+                        {% if not product.is_available or product.stock <= 0 %}
+
+                            <!-- OUT OF STOCK -->
+                            <div class="alert alert-danger">
+                                <i class="fa fa-exclamation-circle"></i>
+                                Out of Stock
+                            </div>
+
+                        {% elif not in_cart %}
+
+                            <!-- ONLY SHOW WHEN NOT IN CART -->
+                            <form
+                                action="{% url 'add_cart' product.id %}"
+                                method="POST"
+                            >
+                                {% csrf_token %}
+
+                                <input
+                                    type="hidden"
+                                    name="source"
+                                    value="product_detail"
+                                >
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-primary"
+                                >
+                                    <i class="fa fa-shopping-cart"></i>
+                                    Add to Cart
+                                </button>
+                            </form>
 
                         {% endif %}
 
-
-                        <div class="mt-4">
+                        <!-- BACK TO STORE -->
+                        <div class="mt-3">
                             <a
                                 href="{% url 'store' %}"
                                 class="btn btn-outline-secondary"
@@ -121,6 +146,54 @@
 
                     </article>
                 </main>
+
+            </div>
+        </div>
+
+        <!-- CUSTOMER REVIEWS -->
+        <br>
+
+        <div class="row">
+            <div class="col-md-9">
+
+                <header class="section-heading">
+                    <h3>Customer Reviews</h3>
+                </header>
+
+                <article class="box mb-3">
+
+                    <div class="icontext w-100">
+
+                        <img
+                            src="{% static 'images/avatars/avatar1.jpg' %}"
+                            class="img-xs icon rounded-circle"
+                            alt="Customer"
+                        >
+
+                        <div class="text">
+                            <span class="date text-muted float-md-right">
+                                24.04.2020
+                            </span>
+
+                            <h6 class="mb-1">
+                                Mike John
+                            </h6>
+                        </div>
+
+                    </div>
+
+                    <div class="mt-3">
+                        <p>
+                            Dummy comment Lorem ipsum dolor sit amet,
+                            consectetur adipisicing elit, sed do eiusmod
+                            tempor incididunt ut labore et dolore magna
+                            aliqua. Ut enim ad minim veniam,
+                            quis nostrud exercitation ullamco laboris
+                            nisi ut aliquip.
+                        </p>
+                    </div>
+
+                </article>
 
             </div>
         </div>
