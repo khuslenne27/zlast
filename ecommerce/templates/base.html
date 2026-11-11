@@ -96,31 +96,70 @@
 
                 <!-- SEARCH -->
                 <div class="col-lg-5 col-md-6 col-sm-12">
-                    <form
-                        action="{% url 'store' %}"
-                        method="GET"
-                        class="search"
-                    >
-                        <div class="input-group w-100">
-                            <input
-                                type="text"
-                                name="keyword"
-                                class="form-control"
-                                placeholder="Search"
-                                value="{{ keyword|default:'' }}"
-                            >
+    <form
+        action="{% url 'store' %}"
+        method="GET"
+        class="search"
+    >
+        <div class="input-group w-100 mb-2">
 
-                            <div class="input-group-append">
-                                <button
-                                    class="btn btn-primary"
-                                    type="submit"
-                                >
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+            <input
+                type="text"
+                name="keyword"
+                class="form-control"
+                placeholder="Search products..."
+                value="{{ keyword|default:'' }}"
+            >
+
+            <div class="input-group-append">
+                <button
+                    class="btn btn-primary"
+                    type="submit"
+                >
+                    <i class="fa fa-search"></i>
+                </button>
+            </div>
+
+        </div>
+
+        <!-- PRICE FILTER -->
+        <div class="row">
+
+            <div class="col-5">
+                <input
+                    type="number"
+                    name="min_price"
+                    class="form-control"
+                    placeholder="Min price"
+                    min="0"
+                    value="{{ min_price|default:'' }}"
+                >
+            </div>
+
+            <div class="col-5">
+                <input
+                    type="number"
+                    name="max_price"
+                    class="form-control"
+                    placeholder="Max price"
+                    min="0"
+                    value="{{ max_price|default:'' }}"
+                >
+            </div>
+
+            <div class="col-2">
+                <button
+                    type="submit"
+                    class="btn btn-primary w-100"
+                    title="Filter by price"
+                >
+                    <i class="fa fa-filter"></i>
+                </button>
+            </div>
+
+        </div>
+    </form>
+</div>
 
                 <!-- ACCOUNT -->
                 <div class="col-lg-3 col-md-6">

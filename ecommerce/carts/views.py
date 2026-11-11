@@ -40,7 +40,6 @@ def add_cart(request, product_id):
             }
         )
 
-        # Product Detail-ээс нэмэх үед давхардуулахгүй
         if request.POST.get('source') == 'product_detail':
             if cart_item.quantity > 0:
                 messages.warning(
