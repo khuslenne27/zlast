@@ -13,6 +13,7 @@ def User_register(request):
         username = request.POST.get('username')
         email = request.POST.get('email')
         password = request.POST.get('password')
+        phone = request.POST.get('phone_number')
         confirm_password = request.POST.get('confirm_password')
 
         if password != confirm_password:
@@ -25,6 +26,9 @@ def User_register(request):
 
         if User.objects.filter(email=email).exists():
             messages.error(request, 'Энэ имэйл бүртгэлтэй байна!')
+            return redirect('register')
+        if User.objects.filter(phone_number=phone).exists():
+            messages.error(request, "Энэ дугаар бүртгэлтэй байна!")
             return redirect('register')
 
         user = User.objects.create_user(
