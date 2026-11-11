@@ -1,0 +1,117 @@
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<section class="section-content padding-y">
+
+    <div class="container">
+
+        <div class="card mx-auto"
+             style="max-width:550px; margin-top:50px;">
+
+            <div class="card-body">
+
+                <div class="text-center mb-4">
+
+                    <div class="icon icon-lg rounded-circle border mx-auto mb-3"
+                         style="width:80px; height:80px; line-height:80px; font-size:35px;">
+
+                        <i class="fa fa-user"></i>
+
+                    </div>
+
+                    <h4>My Profile</h4>
+
+                    <p class="text-muted">
+                        Your account information
+                    </p>
+
+                </div>
+
+                {% include 'includes/alert.html' %}
+
+                <hr>
+
+                <!-- FIRST NAME -->
+                <div class="form-group">
+                    <label>First Name</label>
+
+                    <input
+                        type="text"
+                        class="form-control"
+                        value="{{ user.first_name }}"
+                        readonly
+                    >
+                </div>
+
+                <!-- LAST NAME -->
+                <div class="form-group">
+                    <label>Last Name</label>
+
+                    <input
+                        type="text"
+                        class="form-control"
+                        value="{{ user.last_name }}"
+                        readonly
+                    >
+                </div>
+
+                <!-- USERNAME -->
+                <div class="form-group">
+                    <label>Username</label>
+
+                    <input
+                        type="text"
+                        class="form-control"
+                        value="{{ user.username }}"
+                        readonly
+                    >
+                </div>
+
+                <!-- EMAIL -->
+                <div class="form-group">
+                    <label>Email Address</label>
+
+                    <input
+                        type="email"
+                        class="form-control"
+                        value="{{ user.email }}"
+                        readonly
+                    >
+                </div>
+
+                <hr>
+
+                <!-- LOGOUT BUTTON -->
+                <form action="{% url 'logout' %}" method="POST">
+
+                    {% csrf_token %}
+
+                    <button
+                        type="submit"
+                        class="btn btn-danger btn-block"
+                    >
+                        <i class="fa fa-sign-out-alt"></i>
+                        Logout
+                    </button>
+
+                </form>
+
+                <a
+                    href="{% url 'home' %}"
+                    class="btn btn-light btn-block mt-2"
+                >
+                    Back to Home
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
