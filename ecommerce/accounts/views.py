@@ -3,6 +3,10 @@ from django.shortcuts import render, redirect
 from django.contrib import messages, auth
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.db import IntegrityError, transaction
+import re
+
+from .models import UserProfile
 
 
 def User_register(request):
@@ -13,8 +17,14 @@ def User_register(request):
         username = request.POST.get('username')
         email = request.POST.get('email')
         password = request.POST.get('password')
-        phone = request.POST.get('phone_number')
+        phone = re.sub(r'[\s()-]', '', request.POST.get('phone_number', ''))
+        if phone.startswith('+976') and len(phone) == 12:
+            phone = phone[4:]
         confirm_password = request.POST.get('confirm_password')
+
+        if not re.fullmatch(r'\+?[0-9]{8,15}', phone) or len(phone) > 15:
+            messages.error(request, 'Утасны дугаараа зөв оруулна уу!')
+            return redirect('register')
 
         if password != confirm_password:
             messages.error(request, 'Нууц үг таарахгүй байна!')
@@ -27,17 +37,23 @@ def User_register(request):
         if User.objects.filter(email=email).exists():
             messages.error(request, 'Энэ имэйл бүртгэлтэй байна!')
             return redirect('register')
-        if User.objects.filter(phone_number=phone).exists():
+        if UserProfile.objects.filter(phone_number=phone).exists():
             messages.error(request, "Энэ дугаар бүртгэлтэй байна!")
             return redirect('register')
 
-        user = User.objects.create_user(
-            first_name=first_name,
-            last_name=last_name,
-            username=username,
-            email=email,
-            password=password
-        )
+        try:
+            with transaction.atomic():
+                user = User.objects.create_user(
+                    first_name=first_name,
+                    last_name=last_name,
+                    username=username,
+                    email=email,
+                    password=password
+                )
+                UserProfile.objects.create(user=user, phone_number=phone)
+        except IntegrityError:
+            messages.error(request, 'Хэрэглэгчийн нэр эсвэл утасны дугаар бүртгэлтэй байна!')
+            return redirect('register')
 
         messages.success(request, 'Амжилттай бүртгэгдлээ!')
         return redirect('signin')
